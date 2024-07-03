@@ -1,0 +1,7 @@
+CREATE SEQUENCE product_key START WITH 100 INCREMENT BY 1;
+
+CREATE TABLE models (
+    id INT PRIMARY KEY,
+    name VARCHAR(255),
+    weight INT NOT NULL
+);

@@ -1,0 +1,1 @@
+DELETE FROM models WHERE height = 0 OR weight = 0;
