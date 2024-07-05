@@ -1,4 +1,4 @@
-package com.example.graphqlserver;
+package com.example.graphql;
 
 import org.springframework.stereotype.Repository;
 
