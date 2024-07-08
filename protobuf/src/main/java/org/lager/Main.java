@@ -4,6 +4,6 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
 
-        // use in terminal: protoc -I=. --java_out=. addressbook.proto
+        // use in terminal: -I=src/main/resources --java_out=src/main/java addressbook.proto
     }
 }
