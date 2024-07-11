@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WebMvcTest(Controller.class)
 @AutoConfigureMockMvc
-//@Import(SecurityConfigDB.class)
+@Import(SecurityConfigFilter.class)
 public class ControllerTests {
 
     @Autowired
