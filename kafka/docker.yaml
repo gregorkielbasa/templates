@@ -1,0 +1,58 @@
+version: '3'
+
+volumes:
+  kafka-data:
+    driver: local
+
+services:
+  broker:
+    image: apache/kafka:latest
+    container_name: broker
+    environment:
+      - KAFKA_NODE_ID=1
+      - KAFKA_PROCESS_ROLES=broker,controller
+      - KAFKA_LISTENERS=PLAINTEXT://broker:9092,CONTROLLER://broker:9093
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://broker:9092
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@broker:9093
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+  number-consumer:
+    image: number-consumer
+    depends_on:
+      broker:
+        condition: service_started
+    environment:
+      - KAFKA_URL=broker
+  streamer:
+    image: streamer
+    depends_on:
+      broker:
+        condition: service_started
+    environment:
+      - KAFKA_URL=broker
+  text-consumer:
+    image: text-consumer
+    depends_on:
+      broker:
+        condition: service_started
+    environment:
+      - KAFKA_URL=broker
+  timer-sender:
+    image: timer-sender
+    depends_on:
+      broker:
+        condition: service_started
+    environment:
+      - KAFKA_URL=broker
+  web-sender:
+    image: web-sender
+    depends_on:
+      broker:
+        condition: service_started
+    ports:
+      - 8080:8080
+    environment:
+      - KAFKA_URL=broker
