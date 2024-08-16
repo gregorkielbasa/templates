@@ -23,6 +23,7 @@ public class KafkaProducerConfig {
         this.bootstrapServers = bootstrapServers;
     }
 
+    //WITHOUT KEY
     @Bean
     public KafkaTemplate<Void, Long> longKafkaTemplate() {
         return new KafkaTemplate<>(longProducerFactory());
@@ -37,16 +38,17 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
+    //WITH KEY
     @Bean
-    public KafkaTemplate<Void, String> stringKafkaTemplate() {
+    public KafkaTemplate<Long, String> stringKafkaTemplate() {
         return new KafkaTemplate<>(stringProducerFactory());
     }
 
     @Bean
-    public ProducerFactory<Void, String> stringProducerFactory() {
+    public ProducerFactory<Long, String> stringProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, VoidSerializer.class);
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         return new DefaultKafkaProducerFactory<>(configProps);
     }

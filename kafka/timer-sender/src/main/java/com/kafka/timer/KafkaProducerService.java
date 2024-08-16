@@ -10,10 +10,10 @@ public class KafkaProducerService {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaProducerService.class);
     private final KafkaTemplate<Void, Long> longKafkaTemplate;
-    private final KafkaTemplate<Void, String> stringKafkaTemplate;
+    private final KafkaTemplate<Long, String> stringKafkaTemplate;
 
     public KafkaProducerService(KafkaTemplate<Void, Long> longKafkaTemplate,
-                                KafkaTemplate<Void, String> stringKafkaTemplate) {
+                                KafkaTemplate<Long, String> stringKafkaTemplate) {
         this.longKafkaTemplate = longKafkaTemplate;
         this.stringKafkaTemplate = stringKafkaTemplate;
     }
@@ -25,6 +25,7 @@ public class KafkaProducerService {
 
     public void sendStringMessage(String text) {
         logger.info("New message: {}", text);
-        stringKafkaTemplate.send("book", text);
+        long key = TimerApplication.sentLines;
+        stringKafkaTemplate.send("book", key, text);
     }
 }
